@@ -27,12 +27,13 @@ mw0 = 75000  # kg
 mf0 = 45500  # kg
 md = mw0 - mf0
 mdot0 = 137  # kg/s
+# mdot0 = 237  # kg/s
 tunf0 = mf0/mdot0  # s
-thrust0 = 490e3  # N
+thrust0 = 490e4  # N
 throttle0 = 0  # N/s
 
 # ic
-y0 = 100e3  # m
+y0 = 50e3  # m
 vv0 = 0  # m/s
 av0 = -g
 
@@ -91,11 +92,11 @@ for idx, t_i in enumerate(t_):
         mdot[idx] *= 0.98
 
     if tuzv[idx] < tuza[idx]:  # you're gonna hover
-        throttle[idx] = throttle[idx - 1] - 0.2 * np.abs(tuzv[idx] - tuza[idx])
+        throttle[idx] = throttle[idx - 1] - 0.03 * np.abs(tuzv[idx] - tuza[idx])
         throttle[idx] = np.max([throttle[idx], 0.0])
         mdot[idx] = mdot0 * throttle[idx]
-    elif tuza[idx] > tuzv[idx]:  # you're gonna splat
-        throttle[idx] = throttle[idx - 1] + 0.2 * np.abs(tuzv[idx] - tuza[idx])
+    elif tuzv[idx] > tuza[idx]:  # you're gonna splat
+        throttle[idx] = throttle[idx - 1] + 0.3 * np.abs(tuzv[idx] - tuza[idx])
         throttle[idx] = np.min([throttle[idx], 1.0])
         mdot[idx] = mdot0 * throttle[idx]
 
